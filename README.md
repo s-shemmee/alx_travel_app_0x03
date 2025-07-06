@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 ```
 alx_travel_app
 ├─ .env
@@ -11678,3 +11679,5 @@ alx_travel_app
       └─ sqlformat.exe
 
 ```
+=======
+>>>>>>> f3ff7430227bb6c0ed220bfa202d7994bc5c2c6d
