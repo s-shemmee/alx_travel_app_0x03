@@ -4,16 +4,36 @@ alx_travel_app
 ├─ .env
 ├─ alx_travel_app
 │  ├─ asgi.py
+│  ├─ listings
+│  │  ├─ admin.py
+│  │  ├─ apps.py
+│  │  ├─ migrations
+│  │  │  ├─ __init__.py
+│  │  │  └─ __pycache__
+│  │  │     └─ __init__.cpython-313.pyc
+│  │  ├─ models.py
+│  │  ├─ tests.py
+│  │  ├─ views.py
+│  │  ├─ __init__.py
+│  │  └─ __pycache__
+│  │     ├─ admin.cpython-313.pyc
+│  │     ├─ apps.cpython-313.pyc
+│  │     ├─ models.cpython-313.pyc
+│  │     └─ __init__.cpython-313.pyc
+│  ├─ requirements.txt
 │  ├─ settings.py
 │  ├─ urls.py
 │  ├─ wsgi.py
 │  ├─ __init__.py
 │  └─ __pycache__
 │     ├─ settings.cpython-313.pyc
+│     ├─ urls.cpython-313.pyc
+│     ├─ wsgi.cpython-313.pyc
 │     └─ __init__.cpython-313.pyc
+├─ db.sqlite3
 ├─ LICENSE
-├─ listings
 ├─ manage.py
+├─ README.md
 └─ venv
    ├─ Include
    ├─ Lib
