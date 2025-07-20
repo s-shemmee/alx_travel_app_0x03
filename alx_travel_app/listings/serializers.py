@@ -75,37 +75,30 @@ class BookingSerializer(serializers.ModelSerializer):
         read_only_fields = ['booking_id', 'created_at']
 
     def validate(self, data):
-        """Custom validation for booking dates"""
+        """Validate booking dates and check for overlaps"""
         start_date = data.get('start_date')
         end_date = data.get('end_date')
+        property_obj = data.get('property')
         
-        if start_date and end_date:
-            if end_date <= start_date:
-                raise serializers.ValidationError("End date must be after start date.")
-                
-            # Check for overlapping bookings
-            property_obj = data.get('property')
-            if property_obj:
-                overlapping_bookings = Booking.objects.filter(
-                    property=property_obj,
-                    start_date__lt=end_date,
-                    end_date__gt=start_date
-                )
-                
-                # Exclude current instance if updating
-                if self.instance:
-                    overlapping_bookings = overlapping_bookings.exclude(pk=self.instance.pk)
-                
-                if overlapping_bookings.exists():
-                    raise serializers.ValidationError("This property is already booked for the selected dates.")
+        # Check if end date is after start date
+        if end_date <= start_date:
+            raise serializers.ValidationError("End date must be after start date.")
+        
+        # Check for overlapping bookings (exclude current booking if updating)
+        overlapping_bookings = Booking.objects.filter(
+            property=property_obj,
+            start_date__lt=end_date,
+            end_date__gt=start_date
+        )
+        
+        # If updating, exclude the current booking
+        if self.instance:
+            overlapping_bookings = overlapping_bookings.exclude(pk=self.instance.pk)
+        
+        if overlapping_bookings.exists():
+            raise serializers.ValidationError("This property is already booked for the selected dates.")
         
         return data
-
-    def validate_total_price(self, value):
-        """Validate that total price is positive"""
-        if value <= 0:
-            raise serializers.ValidationError("Total price must be greater than zero.")
-        return value
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -139,27 +132,24 @@ class ReviewSerializer(serializers.ModelSerializer):
         read_only_fields = ['review_id', 'created_at']
 
     def validate_rating(self, value):
-        """Validate that rating is between 1 and 5"""
+        """Validate rating is between 1 and 5"""
         if value < 1 or value > 5:
             raise serializers.ValidationError("Rating must be between 1 and 5.")
         return value
 
     def validate(self, data):
-        """Custom validation to ensure one review per user per property"""
+        """Ensure user can only review a property once"""
         property_obj = data.get('property')
-        user_obj = data.get('user')
+        user = data.get('user')
         
-        if property_obj and user_obj:
-            existing_review = Review.objects.filter(
-                property=property_obj,
-                user=user_obj
-            )
-            
-            # Exclude current instance if updating
-            if self.instance:
-                existing_review = existing_review.exclude(pk=self.instance.pk)
-            
-            if existing_review.exists():
-                raise serializers.ValidationError("You have already reviewed this property.")
+        # Check if user has already reviewed this property (exclude current review if updating)
+        existing_review = Review.objects.filter(property=property_obj, user=user)
+        
+        # If updating, exclude the current review
+        if self.instance:
+            existing_review = existing_review.exclude(pk=self.instance.pk)
+        
+        if existing_review.exists():
+            raise serializers.ValidationError("You have already reviewed this property.")
         
         return data
