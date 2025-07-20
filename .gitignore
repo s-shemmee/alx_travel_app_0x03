@@ -1,0 +1,105 @@
+# Django Project .gitignore
+
+# Environment variables (NEVER commit these!)
+.env
+.env.local
+.env.production
+*.env
+
+# Django secret files
+local_settings.py
+
+# Database files (for development)
+*.sqlite3
+*.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+.venv/
+env/
+.env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Django static files (when collected)
+/staticfiles/
+/static/
+/media/
+
+# Logs
+*.log
+logs/
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+
+# Test files
+.pytest_cache/
+.tox/
+
+# Backup files
+*.bak
+*.backup
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Security files
+*.pem
+*.key
+*.crt
+*.csr
+
+# API keys and secrets
+secrets.json
+credentials.json
+
+# Local development files
+local_settings.py
+development.py
