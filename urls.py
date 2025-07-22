@@ -29,6 +29,6 @@ def root_view(request):
 urlpatterns = [
     path('', root_view),  # simple JSON response at root /
     path('admin/', admin.site.urls),
-    path('api/', include('alx_travel_app.listings.urls')),  # include listings app URLs under /api/
+    path('api/', include('apps.listings.urls')),  # include listings app URLs under /api/
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
