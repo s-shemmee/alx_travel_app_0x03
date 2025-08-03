@@ -76,7 +76,31 @@ Options:
 - **Bookings**: Non-overlapping reservations with calculated pricing
 - **Reviews**: Realistic ratings (biased toward 4-5 stars) with sample comments
 
-## 🚀 Setup and Installation
+## � API Endpoints (Milestone 3)
+
+The following RESTful endpoints are available under `/api/`:
+
+### Listings API
+- `GET /api/listings/` — List all listings
+- `POST /api/listings/` — Create a new listing
+- `GET /api/listings/{id}/` — Retrieve a listing
+- `PUT /api/listings/{id}/` — Update a listing
+- `DELETE /api/listings/{id}/` — Delete a listing
+
+### Bookings API
+- `GET /api/bookings/` — List all bookings
+- `POST /api/bookings/` — Create a new booking
+- `GET /api/bookings/{id}/` — Retrieve a booking
+- `PUT /api/bookings/{id}/` — Update a booking
+- `DELETE /api/bookings/{id}/` — Delete a booking
+
+### API Documentation
+
+Interactive Swagger UI is available at: [http://127.0.0.1:8000/swagger/](http://127.0.0.1:8000/swagger/)
+
+You can use tools like Postman or the Swagger UI to test all endpoints (GET, POST, PUT, DELETE).
+
+## �🚀 Setup and Installation
 
 ### Prerequisites
 - Python 3.13+
@@ -171,13 +195,17 @@ python manage.py seed --users 5 --listings 10 --bookings 5 --reviews 8
 - API: `http://127.0.0.1:8000/api/`
 - Swagger: `http://127.0.0.1:8000/swagger/`
 
-## 📋 Completed Tasks
+## 📋 Completed Tasks (Milestone 3)
 
 ✅ **Database Models**: Listing, Booking, and Review models with proper relationships and constraints  
 ✅ **Serializers**: Complete DRF serializers with validation for all models  
 ✅ **Management Command**: Flexible seeder with customizable data generation  
 ✅ **Database Migration**: Successfully applied all model migrations  
 ✅ **Data Seeding**: Verified sample data creation and relationships  
+✅ **API Views**: ViewSets for Listing and Booking with full CRUD operations  
+✅ **REST URLs**: Router-based URL configuration under `/api/`  
+✅ **API Tests**: Unit tests for API endpoints  
+✅ **Swagger Documentation**: Interactive API documentation available  
 ✅ **Documentation**: Comprehensive README with setup instructions  
 
 ## 🚀 Next Steps
@@ -191,7 +219,8 @@ python manage.py seed --users 5 --listings 10 --bookings 5 --reviews 8
 
 ---
 
-**Project Status**: ✅ Milestone 2 Complete  
+**Project Status**: ✅ Milestone 3 Complete  
 **Django Version**: 5.2.4  
 **DRF Version**: 3.16.0  
-**Database**: SQLite (Development)
+**Database**: SQLite (Development)  
+**API Endpoints**: ✅ Functional with Swagger Documentation
