@@ -1,8 +1,8 @@
-# ALX Travel App - Milestone 2
+# ALX Travel App - Milestone 3
 
-## Database Modeling and Data Seeding in Django
+## API Development for Listings and Bookings in Django
 
-This project implements the database models, serializers, and management commands for the ALX Travel App.
+This project implements ViewSets and API endpoints for managing listings and bookings, with comprehensive API documentation using Swagger.
 
 ## Features Implemented
 
