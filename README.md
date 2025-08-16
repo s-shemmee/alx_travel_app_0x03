@@ -8,38 +8,22 @@ This project implements ViewSets and API endpoints for managing listings and boo
 
 ### 🏗️ Database Models
 
-**1. Listing Model**
+
 - `listing_id`: UUID primary key
 - `host`: Foreign key to User model
 - `name`: Property name (max 200 characters)
 - `description`: Detailed property description
 - `location`: Property location (max 200 characters)
-- `pricepernight`: Decimal field for nightly rate
-- `created_at` & `updated_at`: Automatic timestamps
-
-**2. Booking Model**
-- `booking_id`: UUID primary key
 - `property`: Foreign key to Listing model
 - `user`: Foreign key to User model
-- `start_date` & `end_date`: Booking date range
 - `total_price`: Calculated total cost
 - `created_at`: Automatic timestamp
-- Constraints: End date must be after start date, no overlapping bookings
-
 **3. Review Model**
 - `review_id`: UUID primary key
-- `property`: Foreign key to Listing model
-- `user`: Foreign key to User model
 - `rating`: Integer field (1-5 stars)
 - `comment`: Review text
-- `created_at`: Automatic timestamp
-- Constraint: One review per user per property
-
-### 🔄 API Serializers
 
 **1. ListingSerializer**
-- Full CRUD serialization for Listing model
-- Nested host information (read-only)
 - Price validation (must be positive)
 - Host assignment via `host_id` field
 
