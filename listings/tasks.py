@@ -1,13 +1,10 @@
 from celery import shared_task
 from django.core.mail import send_mail
-from django.conf import settings
 
 @shared_task
-def send_booking_confirmation_email(to_email, subject, message):
-    send_mail(
-        subject,
-        message,
-        settings.DEFAULT_FROM_EMAIL,
-        [to_email],
-        fail_silently=False,
-    )
+def send_booking_confirmation_email(email, listing_title, check_in, check_out):
+    subject = f'Booking Confirmation: {listing_title}'
+    message = f'Your booking from {check_in} to {check_out} has been confirmed.'
+    from_email = None
+    recipient_list = [email]
+    send_mail(subject, message, from_email, recipient_list)
