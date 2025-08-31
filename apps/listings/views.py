@@ -90,3 +90,13 @@ class BookingViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.all()
     serializer_class = BookingSerializer
     permission_classes = [permissions.AllowAny]
+
+    def perform_create(self, serializer):
+        booking = serializer.save()
+        # Fetch user email and booking details
+        to_email = getattr(booking, 'user_email', None) or getattr(booking, 'email', None) or 'user@example.com'
+        subject = 'Booking Confirmation'
+        message = f'Your booking (ID: {booking.id}) has been confirmed.'
+        # Import and trigger Celery task
+        from .tasks import send_booking_confirmation_email
+        send_booking_confirmation_email.delay(to_email, subject, message)

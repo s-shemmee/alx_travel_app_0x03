@@ -1,3 +1,37 @@
+# Milestone 5: Celery & Email Notification Setup
+
+## Celery Configuration
+- Celery is configured with RabbitMQ as the broker.
+- See `settings.py` for broker and backend settings.
+- Celery app is initialized in `celery.py`.
+
+## Email Notification Task
+- The shared task for sending booking confirmation emails is in `apps/listings/tasks.py`.
+- Booking creation triggers the email task asynchronously via Celery in `BookingViewSet`.
+
+## How to Run
+1. Start RabbitMQ server (locally or remotely).
+2. Start Celery worker:
+   ```bash
+   celery -A celery worker --loglevel=info
+   ```
+3. Run Django server as usual.
+
+## Testing
+- Create a booking via API or admin.
+- Check that a confirmation email is sent asynchronously.
+
+## Configuration
+- Update SMTP settings in `settings.py` for your email provider.
+
+## Files Modified
+- `settings.py`: Celery & email config
+- `celery.py`: Celery app
+- `apps/listings/tasks.py`: Email task
+- `apps/listings/views.py`: Task trigger
+
+---
+For manual review, ensure RabbitMQ and Celery worker are running, and test booking creation for email delivery.
 # ALX Travel App - Milestone 3
 
 ## API Development for Listings and Bookings in Django
