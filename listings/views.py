@@ -1,6 +1,6 @@
 from rest_framework import viewsets, permissions
-from apps.listings.models import Listing, Booking
-from apps.listings.serializers import ListingSerializer, BookingSerializer
+from .models import Listing, Booking
+from .serializers import ListingSerializer, BookingSerializer
 
 class ListingViewSet(viewsets.ModelViewSet):
     """ViewSet for CRUD operations on Listing model"""
