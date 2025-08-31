@@ -1,244 +1,108 @@
-# Milestone 5: Celery & Email Notification Setup
+# `alx_travel_app_0x00` - Database Modeling and Data Seeding
 
-## Celery Configuration
-- Celery is configured with RabbitMQ as the broker.
-- See `settings.py` for broker and backend settings.
-- Celery app is initialized in `celery.py`.
+This repository contains the solution for the "Database Modeling and Data Seeding in Django" mandatory task, part of the ALX Backend Web Development curriculum.
 
-## Email Notification Task
-- The shared task for sending booking confirmation emails is in `apps/listings/tasks.py`.
-- Booking creation triggers the email task asynchronously via Celery in `BookingViewSet`.
+## Objective
 
-## How to Run
-1. Start RabbitMQ server (locally or remotely).
-2. Start Celery worker:
-   ```bash
-   celery -A celery worker --loglevel=info
-   ```
-3. Run Django server as usual.
+The primary objective of this task was to define the database models (`Listing`, `Booking`, `Review`), create serializers for API data representation, and implement a Django management command to seed the database with sample data. This lays the foundational data structure for the `alx_travel_app`.
 
-## Testing
-- Create a booking via API or admin.
-- Check that a confirmation email is sent asynchronously.
+## Project Structure
 
-## Configuration
-- Update SMTP settings in `settings.py` for your email provider.
+The core files modified/created for this task are located within the `alx_travel_app` directory:
 
-## Files Modified
-- `settings.py`: Celery & email config
-- `celery.py`: Celery app
-- `apps/listings/tasks.py`: Email task
-- `apps/listings/views.py`: Task trigger
-
----
-For manual review, ensure RabbitMQ and Celery worker are running, and test booking creation for email delivery.
-# ALX Travel App - Milestone 3
-
-## API Development for Listings and Bookings in Django
-
-This project implements ViewSets and API endpoints for managing listings and bookings, with comprehensive API documentation using Swagger.
+alx_travel_app_0x00/alx_travel_app/
+├── alx_travel_app/
+│   ├── init.py
+│   ├── asgi.py
+│   ├── settings.py           # Updated INSTALLED_APPS, .env setup
+│   ├── urls.py
+│   └── wsgi.py
+├── listings/
+│   ├── init.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── migrations/
+│   │   └── init.py
+│   ├── management/             # New directory for custom commands
+│   │   └── commands/
+│   │       └── seed.py       # Custom command to seed database
+│   ├── models.py               # Defines Listing, Booking, Review models
+│   ├── serializers.py          # Defines ListingSerializer, BookingSerializer
+│   ├── tests.py
+│   └── views.py
+├── manage.py
+├── requirements.txt
+└── .env                        # New file for environment variables (e.g., SECRET_KEY)
 
 ## Features Implemented
 
-### 🏗️ Database Models
+* **Database Models**:
+    * `Listing`: Represents a travel accommodation (e.g., apartment, villa, tent) with details such as title, description, location, pricing, capacity, and owner.
+    * `Booking`: Manages reservations for a `Listing`, including check-in/out dates, guest information, and total price. Includes a `unique_together` constraint to prevent overlapping bookings.
+    * `Review`: Allows guests to provide ratings and comments for a `Listing`.
+* **Django REST Framework Serializers**:
+    * `ListingSerializer`: Converts `Listing` model instances to JSON format for API responses and handles deserialization for creating/updating listings.
+    * `BookingSerializer`: Handles serialization/deserialization for `Booking` instances.
+* **Database Seeder**:
+    * A custom Django management command (`python manage.py seed`) has been implemented.
+    * This command populates the database with sample `User` accounts (hosts and guests), `Listing` entries, `Booking` records, and `Review` data, facilitating easy testing and development.
+* **Environment Variables**:
+    * Configuration for `SECRET_KEY` is now handled via a `.env` file for better security practices.
 
+## Setup and Installation
 
-- `listing_id`: UUID primary key
-- `host`: Foreign key to User model
-- `name`: Property name (max 200 characters)
-- `description`: Detailed property description
-- `location`: Property location (max 200 characters)
-- `property`: Foreign key to Listing model
-- `user`: Foreign key to User model
-- `total_price`: Calculated total cost
-- `created_at`: Automatic timestamp
-**3. Review Model**
-- `review_id`: UUID primary key
-- `rating`: Integer field (1-5 stars)
-- `comment`: Review text
-
-**1. ListingSerializer**
-- Price validation (must be positive)
-- Host assignment via `host_id` field
-
-**2. BookingSerializer**
-- Full CRUD serialization for Booking model
-- Nested property and user information (read-only)
-- Date validation (end date after start date)
-- Overlapping booking prevention
-- Price validation (must be positive)
-
-**3. ReviewSerializer**
-- Full CRUD serialization for Review model
-- Nested property and user information (read-only)
-- Rating validation (1-5 range)
-- One review per user per property constraint
-
-**4. UserSerializer**
-- Basic user information serialization
-- Fields: id, username, first_name, last_name, email
-
-### 🌱 Database Seeding
-
-**Management Command: `python manage.py seed`**
-
-Options:
-- `--users <number>`: Number of users to create (default: 10)
-- `--listings <number>`: Number of listings to create (default: 20)
-- `--bookings <number>`: Number of bookings to create (default: 15)
-- `--reviews <number>`: Number of reviews to create (default: 25)
-
-**Sample Data Generated:**
-- **Users**: Random names with realistic email addresses
-- **Listings**: Various property types (Apartment, House, Villa, etc.) across major US cities
-- **Bookings**: Non-overlapping reservations with calculated pricing
-- **Reviews**: Realistic ratings (biased toward 4-5 stars) with sample comments
-
-## � API Endpoints (Milestone 3)
-
-The following RESTful endpoints are available under `/api/`:
-
-### Listings API
-- `GET /api/listings/` — List all listings
-- `POST /api/listings/` — Create a new listing
-- `GET /api/listings/{id}/` — Retrieve a listing
-- `PUT /api/listings/{id}/` — Update a listing
-- `DELETE /api/listings/{id}/` — Delete a listing
-
-### Bookings API
-- `GET /api/bookings/` — List all bookings
-- `POST /api/bookings/` — Create a new booking
-- `GET /api/bookings/{id}/` — Retrieve a booking
-- `PUT /api/bookings/{id}/` — Update a booking
-- `DELETE /api/bookings/{id}/` — Delete a booking
-
-### API Documentation
-
-Interactive Swagger UI is available at: [http://127.0.0.1:8000/swagger/](http://127.0.0.1:8000/swagger/)
-
-You can use tools like Postman or the Swagger UI to test all endpoints (GET, POST, PUT, DELETE).
-
-## �🚀 Setup and Installation
+Follow these steps to set up the project locally and run the database seeding command.
 
 ### Prerequisites
-- Python 3.13+
-- Django 5.2.4
-- Virtual environment
 
-### Installation Steps
+* Python 3.8+
+* pip (Python package installer)
+* Git
 
-1. **Activate Virtual Environment**
-   ```bash
-   source .venv/Scripts/activate  # Windows
-   # or
-   source .venv/bin/activate      # Linux/Mac
-   ```
+### 1. Clone the Repository
 
-2. **Install Dependencies**
-   ```bash
-   pip install Django==5.2.4
-   pip install djangorestframework==3.16.0
-   pip install django-cors-headers==4.7.0
-   pip install drf-yasg==1.21.10
-   ```
-
-3. **Apply Migrations**
-   ```bash
-   cd alx_travel_app
-   python manage.py makemigrations
-   python manage.py migrate
-   ```
-
-4. **Seed Database**
-   ```bash
-   python manage.py seed
-   ```
-
-5. **Run Development Server**
-   ```bash
-   python manage.py runserver
-   ```
-
-## 📁 Project Structure
-
-```
-alx_travel_app_0x00/
-├── alx_travel_app/
-│   ├── manage.py
-│   ├── db.sqlite3
-│   └── alx_travel_app/
-│       ├── settings.py
-│       ├── urls.py
-│       └── listings/
-│           ├── models.py          # Database models
-│           ├── serializers.py     # DRF serializers
-│           ├── management/
-│           │   └── commands/
-│           │       └── seed.py    # Database seeder
-│           └── migrations/
-│               └── 0001_initial.py
-└── README.md
-```
-
-## 🔧 Key Features
-
-### Model Relationships
-- **One-to-Many**: User → Listings (host relationship)
-- **One-to-Many**: User → Bookings (guest relationship)
-- **One-to-Many**: User → Reviews (reviewer relationship)
-- **One-to-Many**: Listing → Bookings
-- **One-to-Many**: Listing → Reviews
-
-### Validation Rules
-- **Listings**: Positive pricing, required fields
-- **Bookings**: Valid date ranges, no overlaps, positive pricing
-- **Reviews**: Rating range (1-5), unique per user-property pair
-
-### Database Constraints
-- UUID primary keys for all main models
-- Automatic timestamp management
-- Foreign key relationships with cascading deletes
-- Check constraints for data integrity
-
-## 🎯 Testing the Implementation
-
-### Verify Database Seeding
 ```bash
-python manage.py seed --users 5 --listings 10 --bookings 5 --reviews 8
+git clone [https://github.com/ndunguloren96/alx_travel_app_0x00.git](https://github.com/ndunguloren96/alx_travel_app_0x00.git)
+cd alx_travel_app_0x00/alx_travel_app
+```
+2. Create and Activate Virtual Environment
+It's highly recommended to use a virtual environment to manage project dependencies.
+```
+python3 -m venv .venv
+source .venv/bin/activate # On Linux/macOS/WSL2
+# .venv\Scripts\activate   # On Windows (Cmd or PowerShell)
 ```
 
-### Check API Endpoints
-- Root: `http://127.0.0.1:8000/`
-- Admin: `http://127.0.0.1:8000/admin/`
-- API: `http://127.0.0.1:8000/api/`
-- Swagger: `http://127.0.0.1:8000/swagger/`
+3. Install Dependencies
+Install all required Python packages from the requirements.txt file.
+```pip install -r requirements.txt```
 
-## 📋 Completed Tasks (Milestone 3)
+4. Configure Environment Variables
+Create a .env file in the alx_travel_app directory (the same directory as manage.py) and add your Django SECRET_KEY.
 
-✅ **Database Models**: Listing, Booking, and Review models with proper relationships and constraints  
-✅ **Serializers**: Complete DRF serializers with validation for all models  
-✅ **Management Command**: Flexible seeder with customizable data generation  
-✅ **Database Migration**: Successfully applied all model migrations  
-✅ **Data Seeding**: Verified sample data creation and relationships  
-✅ **API Views**: ViewSets for Listing and Booking with full CRUD operations  
-✅ **REST URLs**: Router-based URL configuration under `/api/`  
-✅ **API Tests**: Unit tests for API endpoints  
-✅ **Swagger Documentation**: Interactive API documentation available  
-✅ **Documentation**: Comprehensive README with setup instructions  
+```touch .env```
+Open the .env file and add a strong, random SECRET_KEY. You can generate one using Python:
 
-## 🚀 Next Steps
+```
+import random
+import string
+chars = ''.join([random.SystemRandom().choice(string.ascii_letters + string.digits + string.punctuation) for i in range(50)])
+print(chars)
+Example .env content:
+*SECRET_KEY=your_very_long_and_random_secret_key_generated_above!@#$%^&*
+```
 
-- Implement API views and endpoints
-- Add authentication and permissions
-- Create frontend integration
-- Add advanced filtering and search
-- Implement booking conflict resolution
-- Add file upload for property images
+5. Run Database Migrations
+Apply the database schema changes based on the defined models.
+```
+python manage.py makemigrations listings
+python manage.py migrate
+```
+6. Seed the Database
+Populate the database with sample data using the custom management command.
 
----
+```python manage.py seed```
+You should see output indicating the creation of users, listings, bookings, and reviews.
 
-**Project Status**: ✅ Milestone 3 Complete  
-**Django Version**: 5.2.4  
-**DRF Version**: 3.16.0  
-**Database**: SQLite (Development)  
-**API Endpoints**: ✅ Functional with Swagger Documentation
+##Usage
+After completing the setup steps, your Django project's database will be populated with sample data. You can now interact with the models via the Django shell, admin interface, or by building out API endpoints using the provided serializers.
